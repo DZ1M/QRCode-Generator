@@ -1,10 +1,44 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">QR Code Generator</h1>
+    <p>Here you can generate a QR Code quickly!</p>
 </div>
+<form method="post" asp-page="Index">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xl-12">
+                <div class="form-group">
+                    <input asp-for="Texto" class="form-control" placeholder="Enter your Link" autocomplete="off" required />
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xl-12">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-xs btn-block">Generate QR Code</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@if (TempData["Image"] != null)
+{
+    <div class="text-center p-1">
+        <a href="data:image/png;base64,@TempData["Image"]">
+            <img title="QRCode" style="position:relative;padding-bottom:5px;padding-top:5px; border: none; text-align: left;" src="data:image/png;base64,@TempData["Image"]">
+        </a>
+        <a id="img-href" href="data:image/png;base64,@TempData["Image"]" name="QRCode" download style="display:none"></a>
+    </div>
+    <div class="text-center p-1">
+        <button class="btn btn-primary btn-xs" onclick="DownloadQRCode()"><i class="fa fa-download"></i> Download</button>
+    </div>
+}
+<script>
+    function DownloadQRCode() {
+        var dlnk = document.getElementById('img-href');
+        dlnk.click();
+    }
+</script>
